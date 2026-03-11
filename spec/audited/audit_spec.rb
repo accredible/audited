@@ -63,6 +63,7 @@ describe Audited::Audit do
 
   describe "#audited_changes" do
     let(:audit) { Audited.audit_class.new }
+    let(:invalid_yaml_string) { "{\"updated_at\"=>[nil, 2026-02-09T14:38:28.983Z]}" }
 
     it "can unserialize yaml from text columns" do
       audit.audited_changes = {foo: "bar"}
@@ -73,6 +74,11 @@ describe Audited::Audit do
       allow(Audited::YAMLIfTextColumnType).to receive(:text_column?).and_return(false)
       audit.audited_changes = {foo: "bar"}
       expect(audit.audited_changes).to eq "{:foo=>\"bar\"}"
+    end
+
+    it "returns raw text when text column contains invalid yaml" do
+      audit.write_attribute(:audited_changes, invalid_yaml_string)
+      expect(audit.audited_changes).to eq invalid_yaml_string
     end
   end
 

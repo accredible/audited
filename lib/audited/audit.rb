@@ -22,8 +22,7 @@ module Audited
           begin
             ActiveRecord::Coders::YAMLColumn.new(Object).load(obj)
           rescue Psych::SyntaxError
-            obj = obj.gsub("=>", ":")
-            ActiveRecord::Coders::YAMLColumn.new(Object).load(obj)
+            obj
           end
         else
           obj
