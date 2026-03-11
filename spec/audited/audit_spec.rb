@@ -76,7 +76,7 @@ describe Audited::Audit do
       expect(audit.audited_changes).to eq "{:foo=>\"bar\"}"
     end
 
-    it "returns raw text when text column contains invalid yaml" do
+    it "returns raw text when text column is unparseable" do
       audit.write_attribute(:audited_changes, invalid_yaml_string)
       expect(audit.audited_changes).to eq invalid_yaml_string
     end
