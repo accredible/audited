@@ -19,7 +19,11 @@ module Audited
     class << self
       def load(obj)
         if text_column?
-          ActiveRecord::Coders::YAMLColumn.new(Object).load(obj)
+          begin
+            ActiveRecord::Coders::YAMLColumn.new(Object).load(obj)
+          rescue Psych::SyntaxError
+            obj
+          end
         else
           obj
         end
